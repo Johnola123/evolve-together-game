@@ -82,3 +82,13 @@ Provide a public HTTPS URL, project cover image, project description, and ensure
 - During the lobby, Start Fresh removes that player from the roster. During an active match, it marks them disconnected while preserving their species in the current match so scoring remains stable.
 - To intentionally leave and rejoin an in-progress room, use refresh (same identity); Start Fresh creates a fresh anonymous identity, which cannot join a match already underway.
 - Browsers control the wording of refresh warnings; the custom confirmation is specifically for the Start Fresh button.
+
+
+## v1.2: shared matchmaking and complete play flow
+
+- **Play Now / Find a game** joins the oldest occupied open lobby automatically, so two players clicking Play Now on separate devices end up in **the same room**. You can also enter a room code to join a specific lobby.
+- Lobby shows each player, connection state, count, invite link and host timer. Once two players are present and countdown ends, the host changes everyone to their private creature workshop automatically.
+- Build phase has body upgrade buttons, ability sliders, color/species name, draggable preview, Save creature, and Rebuild. When the server deadline expires, it locks designs and displays the same shared survival arena on all devices. Results are ranked across rounds.
+- Refresh reconnects the same browser session. Start Fresh asks confirmation and affects only that player.
+- For **testing** use `GAME_LOBBY=15 GAME_BUILD=45 GAME_SIMULATION=35 GAME_RESULTS=8 GAME_ROUNDS=2 npm start`.
+- **Note**: The game is one server process with in-memory rooms; run one Render instance. Free instances can sleep or restart and drop rooms. Multiplayer browser testing after deployment is recommended.
