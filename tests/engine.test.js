@@ -1,0 +1,4 @@
+const test=require('node:test');const assert=require('node:assert/strict');const {sanitizeCreature,createWorld,tickWorld,scoreWorld}=require('../engine');
+test('reject over-budget creature',()=>{assert.equal(sanitizeCreature({traits:{speed:5,defense:5,sense:5,stealth:5,fertility:5}}).valid,false)});
+test('deduplicate and filter body parts',()=>{const c=sanitizeCreature({parts:['wings','wings','unknown']});assert.deepEqual(c.parts,['wings']);});
+test('simulation deterministic and ranks all players',()=>{const a=[{id:'a',nick:'Alpha',creature:sanitizeCreature({traits:{speed:3,defense:3,sense:3,stealth:2,fertility:3}})},{id:'b',nick:'Beta',creature:sanitizeCreature({traits:{speed:2,defense:4,sense:2,stealth:3,fertility:3}})}];const x=createWorld(a,42),y=createWorld(a,42);for(let i=0;i<50;i++){tickWorld(x);tickWorld(y);}assert.deepEqual(x,y);const res=scoreWorld(x);assert.equal(res.length,2);assert.equal(res[0].rank,1);assert.ok(res[0].score<=100);});
