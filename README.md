@@ -18,10 +18,10 @@ For phones or tablets on the **same Wi-Fi**, use the host computer's local IP in
 ## Game flow (v1.3)
 
 1. **One six-minute lobby (360 seconds)**. Players join using Play Now matchmaking or the room code. The digital host starts the workshop after the countdown when at least two players are connected. The countdown never resets, and a room with fewer than two players ends with a notice.
-2. **Private workshop (600 seconds / ten minutes).** Each player builds their own creature, selecting upgrades and allocating 30 evolution points. Changes may be saved and revised until time runs out.
+2. **Private workshop (240 seconds / four minutes).** Each player builds their own creature, selecting upgrades and allocating 30 evolution points. Changes may be saved and revised until time runs out.
 3. **Shared survival arena (30 seconds maximum).** All species enter the same server-simulated ecosystem and face food scarcity, environmental hazards, and reproduction. During this 30-second arena, every player sees a prominent analysis message; it switches to “Calculating final scores…” for the last five seconds, then the leaderboard appears automatically.
-4. **Results and replay vote (45 seconds).** Survival rankings and scores display. Exactly one round is mandatory. Every connected player must vote Yes to begin another ten-minute workshop; a No vote or missing vote at deadline ends the match.
-5. **Final champion celebration.** The cumulative winner receives a trophy/confetti celebration. If fewer than two players remain online for 15 seconds during an active match, it ends with a message for the remaining player.
+4. **Results and replay vote (45 seconds).** Survival rankings and scores display. Exactly one round is mandatory. Every connected player must vote Yes to begin another four-minute workshop; a No vote or missing vote at deadline ends the match.
+5. **Final champion celebration.** The cumulative winner’s actual nickname appears on every player’s trophy/confetti celebration. If fewer than two players remain online for 15 seconds during an active match, it ends with a message for the remaining player.
 
 The host is fully automatic, with no accounts required for players. A refresh reconnects using the browser's stored player identity.
 
@@ -32,7 +32,7 @@ npm install
 npm start
 ```
 
-Open http://localhost:3000 on the developer computer. Use the local network IP for other devices on the same Wi-Fi, or deploy to a public HTTPS URL for different networks. The six-minute and ten-minute phases are fixed as requested.
+Open http://localhost:3000 on the developer computer. Use the local network IP for other devices on the same Wi-Fi, or deploy to a public HTTPS URL for different networks. The repeating three-minute and fixed four-minute phases are fixed as requested.
 
 ## Tests
 
@@ -107,3 +107,10 @@ If Render Auto-Deploy is enabled, the public URL updates automatically. Otherwis
 
 ### v1.5 survival timer and waiting message
 The shared survival phase is **30 seconds maximum** (server enforced even if `GAME_SIMULATION` is set higher). All devices see a prominent progress message while survival runs. During the final five seconds it changes to **“Calculating final scores…”** and the existing ranked results screen appears automatically at zero. The ready-up lobby, ten-minute workshop, voting, and winner celebration are unchanged.
+
+## v1.6 updates
+
+- The personal creature-building workshop is **4 minutes (240 seconds)**, enforced by the server for each round.
+- When a match ends, **every player sees the same winner’s nickname** in the champion celebration. The winning player additionally sees “That’s you!”
+- All other v1.5 mechanics stay unchanged: ready-up lobby with repeating 3-minute timer, 30-point evolution budget, 30-second survival arena, voting for optional replay, and no accounts.
+- On Render, `GAME_BUILD` is intentionally ignored; setting it to 600 will not override the 240-second workshop. Remove any obsolete `GAME_BUILD` value from Render for clarity.

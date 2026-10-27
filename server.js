@@ -4,7 +4,7 @@ const {sanitizeCreature,createWorld,tickWorld,scoreWorld}=require('./engine');
 const app=express();app.use(express.static(path.join(__dirname,'public')));app.get('/health',(req,res)=>res.json({ok:true,rooms:rooms.size}));
 const server=http.createServer(app);const io=new Server(server,{cors:{origin:false},maxHttpBufferSize:12000});
 const PORT=Number(process.env.PORT||3000);const rooms=new Map();
-const setting={lobby:180,build:600,simulation:30,results:45,rounds:1,minPlayers:2,maxPlayers:30,maximumRounds:10};
+const setting={lobby:180,build:240,simulation:30,results:45,rounds:1,minPlayers:2,maxPlayers:30,maximumRounds:10};
 for(const key of ['simulation','results','minPlayers','maxPlayers'])if(process.env['GAME_'+key.toUpperCase()])setting[key]=Number(process.env['GAME_'+key.toUpperCase()]);
 // The survival arena is never longer than 30 seconds, including on Render.
 setting.simulation=Math.max(1,Math.min(30,Math.floor(setting.simulation)));
