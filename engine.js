@@ -1,7 +1,7 @@
 'use strict';
 const TRAITS=['speed','defense','sense','stealth','fertility'];
 const PARTS={wings:{cost:3,benefit:'speed'},shell:{cost:3,benefit:'defense'},horns:{cost:2,benefit:'defense'},fins:{cost:2,benefit:'speed'},antennae:{cost:2,benefit:'sense'},tail:{cost:1,benefit:'speed'}};
-const MAX_POINTS=16;
+const MAX_POINTS=30;
 function sanitizeCreature(raw={}){
  const name=String(raw.name||'New Species').replace(/[<>]/g,'').trim().slice(0,22)||'New Species';
  const color=/^#[0-9a-fA-F]{6}$/.test(raw.color)?raw.color:'#66dbc1';

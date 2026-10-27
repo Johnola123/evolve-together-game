@@ -6,3 +6,16 @@
 .fresh-button:hover,.fresh-button:focus-visible{background:rgba(255,255,255,.16);outline-offset:3px}
 .fresh-button[hidden]{display:none!important}
 @media(max-width:540px){.fresh-button{padding:7px 10px;font-size:11px}}
+
+/* Winner celebration and optional extra-round vote */
+.winner-celebration{position:relative;overflow:hidden;text-align:center;margin:15px 0 25px;padding:32px 18px;border-radius:25px;border:2px solid #e8d681;background:radial-gradient(circle at 50% 20%,#6d5a2880,transparent 55%),linear-gradient(135deg,#21534c,#172d44)}
+.winner-celebration h2{font-size:clamp(22px,4.4vw,43px);color:#fff8b0;text-shadow:0 4px 20px #0005;position:relative;z-index:2}
+.winner-celebration p{position:relative;z-index:2}.trophy-pop{font-size:72px;animation:trophyEntrance 1s cubic-bezier(.18,.9,.3,1.2) both,championFloat 3s ease-in-out 1s infinite;position:relative;z-index:2}
+@keyframes trophyEntrance{from{transform:scale(.1) rotate(-45deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}@keyframes championFloat{50%{transform:translateY(-8px)}}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}.confetti i{position:absolute;top:-20px;left:calc(var(--i) * 3.5%);width:9px;height:17px;background:hsl(calc(var(--i)*47),90%,70%);animation:confettiFall 3.3s linear infinite;animation-delay:var(--delay)}
+@keyframes confettiFall{0%{transform:translateY(-50px) rotate(0);opacity:0}10%{opacity:1}95%{opacity:1}100%{transform:translateY(430px) rotate(640deg);opacity:0}}
+.vote-panel{padding:15px;border:1px solid #64a891;border-radius:14px;margin:12px 0;background:#21443b}.vote-panel p{font-size:13px}.vote-panel .actions{margin:14px 0}
+@media(prefers-reduced-motion:reduce){.confetti i,.trophy-pop{animation:none}}
+
+/* Clear shared survival progress feedback (v1.5) */
+.simulation-notice{display:flex;align-items:center;gap:16px;padding:17px 20px;margin:12px 0 18px;border-radius:17px;background:linear-gradient(100deg,#214a48,#173948);border:1px solid #75d8b2;box-shadow:0 8px 25px #06192133}.simulation-notice strong{font-size:17px;color:#d0ffe2}.simulation-notice p{margin:5px 0 0;font-size:13px}.analysis-spinner{flex-shrink:0;width:34px;height:34px;border:4px solid #ffffff30;border-top-color:#baffd2;border-radius:50%;animation:analysisSpin 1s linear infinite}@keyframes analysisSpin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.analysis-spinner{animation:none;border-color:#baffd2}}

@@ -15,23 +15,24 @@ Open **http://localhost:3000**. Choose **Create automatic game**, enter a nickna
 
 For phones or tablets on the **same Wi-Fi**, use the host computer's local IP instead of `localhost`, such as `http://192.168.1.50:3000`. Firewall permissions may need adjustment. For players on different networks, deploy to any Node.js host supporting WebSockets and HTTPS; see below.
 
-## Flow
+## Game flow (v1.3)
 
-1. **Lobby (25 seconds):** starts automatically if at least two players joined; otherwise resets a 10-second waiting window.
-2. **Design (150 seconds):** touch and mouse support; species name, color, body upgrades, five trait sliders; one shared 16-point budget; remove/rebuild/save as often as desired.
-3. **Lock + survival (100 seconds):** server checks drafts, creates fallback species where needed, and simulates all species centrally each second. Events rotate through clear skies, drought, predators, rain and cold.
-4. **Rankings (16 seconds):** calculates 35% survival, 25% growth, 20% adaptation, 10% resource efficiency, 10% ecology. Runs three rounds automatically; cumulative scores decide ranking.
-5. **Match complete:** displays cumulative leaderboard. No human controls, no separate host account.
+1. **One six-minute lobby (360 seconds)**. Players join using Play Now matchmaking or the room code. The digital host starts the workshop after the countdown when at least two players are connected. The countdown never resets, and a room with fewer than two players ends with a notice.
+2. **Private workshop (600 seconds / ten minutes).** Each player builds their own creature, selecting upgrades and allocating 30 evolution points. Changes may be saved and revised until time runs out.
+3. **Shared survival arena (30 seconds maximum).** All species enter the same server-simulated ecosystem and face food scarcity, environmental hazards, and reproduction. During this 30-second arena, every player sees a prominent analysis message; it switches to “Calculating final scores…” for the last five seconds, then the leaderboard appears automatically.
+4. **Results and replay vote (45 seconds).** Survival rankings and scores display. Exactly one round is mandatory. Every connected player must vote Yes to begin another ten-minute workshop; a No vote or missing vote at deadline ends the match.
+5. **Final champion celebration.** The cumulative winner receives a trophy/confetti celebration. If fewer than two players remain online for 15 seconds during an active match, it ends with a message for the remaining player.
 
-Players who reconnect using the same browser keep a session identifier and can rejoin a room. Players who arrive after the lobby closes must join another room.
+The host is fully automatic, with no accounts required for players. A refresh reconnects using the browser's stored player identity.
 
-## Fast demo mode
+## Local setup
 
 ```bash
-GAME_LOBBY=10 GAME_BUILD=35 GAME_SIMULATION=30 GAME_RESULTS=8 GAME_ROUNDS=2 npm start
+npm install
+npm start
 ```
 
-Open two browser windows and join the same room. On shared machines, use one normal and one private browser profile to simulate two distinct players. Production default values are specified in `server.js` and can be overridden by environment variables (see `.env.example`). Environment variables are **not** loaded from `.env` automatically: provide them through your hosting provider or run using a tool such as `dotenv-cli`.
+Open http://localhost:3000 on the developer computer. Use the local network IP for other devices on the same Wi-Fi, or deploy to a public HTTPS URL for different networks. The six-minute and ten-minute phases are fixed as requested.
 
 ## Tests
 
@@ -74,21 +75,35 @@ Project title: **Evolve Together: Build. Adapt. Survive.**
 Provide a public HTTPS URL, project cover image, project description, and ensure the project is playable on multiple devices. Follow the competition's contest entry instructions and deadline separately; only the contestant needs a Handshake account, not game players.
 
 
-## Updated player experience (v1.1)
+## Version notes
 
-- Landing page now uses **Play now** rather than **Create automatic game**. A digital host still creates and manages the room without a human host.
-- **Normal refresh reconnects the same nickname/player to the same room** to avoid losing progress on accidental refresh; browsers may show a generic leave-page confirmation during an active match.
-- **Start Fresh** in the header requests confirmation, then resets **only that player's browser identity and room participation**. The shared world, timers, and other players continue.
-- During the lobby, Start Fresh removes that player from the roster. During an active match, it marks them disconnected while preserving their species in the current match so scoring remains stable.
-- To intentionally leave and rejoin an in-progress room, use refresh (same identity); Start Fresh creates a fresh anonymous identity, which cannot join a match already underway.
-- Browsers control the wording of refresh warnings; the custom confirmation is specifically for the Start Fresh button.
+- **v1.1:** Start Fresh requests confirmation and only leaves the local player's session; refresh reconnects.
+- **v1.2:** Automatic matchmaking, shared live player lobby and private timed workshops.
+- **v1.3:** 30 evolution points, one six-minute lobby countdown, ten-minute design period, at least one mandatory round with unanimous optional replay voting, automatic lone-player ending and winner confetti.
+
+## Deploy latest updates to GitHub and Render
+
+Replace the project source files with those in this archive, then from the repository folder run:
+
+```bash
+git add .
+git commit -m "Add optional replay voting, fixed timers, expanded creature budget and champion animation"
+git push origin main
+```
+
+If Render Auto-Deploy is enabled, the public URL updates automatically. Otherwise choose **Manual Deploy → Deploy latest commit** in Render. Make sure only one Render instance runs this in-memory-room prototype. Old game rooms are lost during redeployment.
 
 
-## v1.2: shared matchmaking and complete play flow
+## Version 1.4 — all-player ready-up lobby
 
-- **Play Now / Find a game** joins the oldest occupied open lobby automatically, so two players clicking Play Now on separate devices end up in **the same room**. You can also enter a room code to join a specific lobby.
-- Lobby shows each player, connection state, count, invite link and host timer. Once two players are present and countdown ends, the host changes everyone to their private creature workshop automatically.
-- Build phase has body upgrade buttons, ability sliders, color/species name, draggable preview, Save creature, and Rebuild. When the server deadline expires, it locks designs and displays the same shared survival arena on all devices. Results are ranked across rounds.
-- Refresh reconnects the same browser session. Start Fresh asks confirmation and affects only that player.
-- For **testing** use `GAME_LOBBY=15 GAME_BUILD=45 GAME_SIMULATION=35 GAME_RESULTS=8 GAME_ROUNDS=2 npm start`.
-- **Note**: The game is one server process with in-memory rooms; run one Render instance. Free instances can sleep or restart and drop rooms. Multiplayer browser testing after deployment is recommended.
+- Lobby counter **3 minutes**, automatically restarting every 3 minutes; **timeout never forces a start or ends the lobby**.
+- Each connected participant must choose **Start Game · I’m ready**. The server transitions to the 10-minute private creature builder only when at least two participants are connected **and all of them are ready**.
+- With only one connected participant, Start Game is disabled and the screen explains that another player is required.
+- Ready state is shown beside each nickname. Players can cancel readiness before everyone is ready; disconnecting cancels that player's ready state and excludes them from the online player total. Refresh/reconnect also clears ready state for safety.
+- Once the builder begins, the existing survival simulation, results, optional continuation vote, and winner celebration are unchanged.
+- **Environment**: `GAME_LOBBY` and `GAME_BUILD` are intentionally ignored to enforce 180 seconds and 600 seconds respectively.
+
+**Note:** Deploying a new version restarts the in-memory Node.js server; existing rooms will be lost.
+
+### v1.5 survival timer and waiting message
+The shared survival phase is **30 seconds maximum** (server enforced even if `GAME_SIMULATION` is set higher). All devices see a prominent progress message while survival runs. During the final five seconds it changes to **“Calculating final scores…”** and the existing ranked results screen appears automatically at zero. The ready-up lobby, ten-minute workshop, voting, and winner celebration are unchanged.
