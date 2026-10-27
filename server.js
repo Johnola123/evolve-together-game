@@ -13,7 +13,7 @@ function code(){let c;do{c=crypto.randomBytes(3).toString('hex').slice(0,6).toUp
 function broadcast(room){io.to(room.code).emit('room',snapshot(room));}
 function snapshot(r){return {code:r.code,phase:r.phase,round:r.round,rounds:Math.max(1,r.round),votes:[...r.votes||[]],timeLeft:Math.max(0,Math.ceil((r.endAt-Date.now())/1000)),players:[...r.players.values()].map(p=>({id:p.id,nick:p.nick,online:p.online,ready:p.ready,creature:p.creature})),world:r.phase==='simulation'?r.world:null,results:r.results,settings:setting,message:r.message,finishedReason:r.finishedReason||null};}
 function phase(r,which,duration){r.phase=which;r.endAt=Date.now()+duration*1000;r.message='';broadcast(r);}
-function startBuild(r){r.round++;r.votes=new Set();r.declined=false;r.results=null;r.world=null;for(const p of r.players.values())p.ready=false;phase(r,phases.build,setting.build);}
+function startBuild(r){r.round++;r.votes=new Set();r.declined=false;r.results=null;r.world=null;for(const p of r.players.values()){p.ready=false; if(!p.creature?.valid)p.creature=sanitizeCreature({name:'Nova',color:'#65e9ae',parts:[],traits:{speed:3,defense:3,sense:3,stealth:2,fertility:3}});}phase(r,phases.build,setting.build);}
 function startSimulation(r){for(const p of r.players.values()){if(!p.creature?.valid)p.creature=sanitizeCreature({name:p.nick+'ling',color:'#66dbc1',traits:{speed:2,defense:3,sense:3,stealth:2,fertility:2},parts:[]});p.ready=true;}
  r.world=createWorld([...r.players.values()],crypto.randomInt(1,2**30));phase(r,phases.simulation,setting.simulation);}
 function finishSim(r){r.results=scoreWorld(r.world);for(const item of r.results){const p=r.players.get(item.id);if(p){p.total=Math.round((p.total+item.score)*10)/10;item.total=p.total;}}r.results.sort((a,b)=>b.total-a.total);r.results.forEach((x,i)=>x.overallRank=i+1);phase(r,phases.results,setting.results);}
@@ -55,6 +55,7 @@ io.on('connection',socket=>{
    p.ready=ready===true;r.message=lobbyMessage(r);ack({ok:true});
    if(allLobbyReady(r))startBuild(r);else broadcast(r);
  });
+ socket.on('autosave',({creature}={},ack=()=>{})=>{const r=rooms.get(socket.data?.room);const p=r?.players.get(socket.data?.id);if(!p||r.phase!=='build'||Date.now()>=r.endAt)return ack({error:'Editing has closed.'});const c=sanitizeCreature(creature);if(!c.valid)return ack({error:'Over budget; last valid design is safe.'});p.creature=c;ack({ok:true});});
  socket.on('save',({creature}={},ack=()=>{})=>{const r=rooms.get(socket.data.room);const p=r?.players.get(socket.data.id);if(!p||r.phase!=='build'||Date.now()>=r.endAt)return ack({error:'Editing has closed.'});const c=sanitizeCreature(creature);if(!c.valid)return ack({error:'Evolution point budget exceeded.'});p.creature=c;p.ready=true;broadcast(r);ack({ok:true});});
  socket.on('vote',({continuePlaying}={},ack=()=>{})=>{
    const r=rooms.get(socket.data?.room);

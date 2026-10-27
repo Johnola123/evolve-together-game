@@ -118,3 +118,11 @@ The shared survival phase is **30 seconds maximum** (server enforced even if `GA
 ## v1.7 Entry Screen Wording
 
 The home screen uses **Connect to Game** and **Connect with Room Code** instead of Find a Game / Play Now. No account or password is required. The lobby retains **Start Game** as its readiness action.
+
+
+### v1.8 — Automatic creature saving
+During the 4-minute workshop, each within-budget edit is auto-saved to the server with a brief 120 ms debounce. Pressing **Save now (optional)** is no longer required. At time-out, the server uses the most recent valid creature it received, including a default creature for a player who never edits. Invalid over-budget drafts cannot replace the most recent valid design. Like other room state in this prototype, saves are held in server memory and do not survive a hosting-service restart.
+
+
+## Interface refinement (v1.9)
+The “Build · Adapt · Survive” tagline is now placed beneath the Evolve Together logo. Round information and the current stage appear in clean, separate labels above the stage title, without the distracting “optional replays” phrase or raw `finished` status. Gameplay and timers are unchanged.

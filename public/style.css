@@ -19,3 +19,12 @@
 
 /* Clear shared survival progress feedback (v1.5) */
 .simulation-notice{display:flex;align-items:center;gap:16px;padding:17px 20px;margin:12px 0 18px;border-radius:17px;background:linear-gradient(100deg,#214a48,#173948);border:1px solid #75d8b2;box-shadow:0 8px 25px #06192133}.simulation-notice strong{font-size:17px;color:#d0ffe2}.simulation-notice p{margin:5px 0 0;font-size:13px}.analysis-spinner{flex-shrink:0;width:34px;height:34px;border:4px solid #ffffff30;border-top-color:#baffd2;border-radius:50%;animation:analysisSpin 1s linear infinite}@keyframes analysisSpin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.analysis-spinner{animation:none;border-color:#baffd2}}
+
+/* v1.9: Separate brand tagline from gameplay status and simplify round header */
+.brand-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.brand-tagline{display:block;font-size:10px;letter-spacing:1.45px;font-weight:800;color:#91d5c6;line-height:1.2}
+.hud-detail{min-width:0;flex:1}
+.stage-indicators{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}
+.stage-round,.stage-phase{display:inline-flex;align-items:center;min-height:26px;border:1px solid #426a70;background:#1b3e47;color:#d5f3ea;border-radius:9px;padding:4px 10px;font-size:11px;font-weight:800;letter-spacing:.35px}
+.stage-phase{border-color:#437d6d;background:#174337;color:#aef1cf}
+@media(max-width:540px){.brand-tagline{font-size:8px;letter-spacing:.65px}.hud{gap:10px}.stage-indicators{gap:5px}.stage-round,.stage-phase{font-size:10px;padding:3px 7px}}
