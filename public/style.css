@@ -31,3 +31,10 @@
 
 /* Keep the digital-host guidance prominent without a redundant draft status. */
 .workshop-release-note{margin:0;font-size:15px;font-weight:700;line-height:1.55;color:#e1fff1}
+
+/* Explicit Save now confirmation, independent of background autosave */
+.save-feedback{min-height:0;margin:0;font-size:14px;font-weight:700;line-height:1.4;color:var(--mint)}
+.save-feedback:empty{display:none}
+.save-feedback.pending{color:var(--muted)}
+.save-feedback.success{color:var(--mint)}
+.save-feedback.error{color:#ffb0a2}

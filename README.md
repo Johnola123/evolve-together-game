@@ -130,3 +130,7 @@ The “Build · Adapt · Survive” tagline is now placed beneath the Evolve Tog
 
 ## Interface refinement (v1.10)
 The workshop no longer shows the large draft/unsaved-status heading. It displays only a more prominent notice: 'The digital host automatically releases all creatures when the timer reaches zero.' Automatic saving continues to run unchanged.
+
+### v1.11 — Save confirmation
+
+Tapping **Save now (optional)** displays an accessible inline success message and a temporary notification once the server confirms saving. Background auto-save remains active and does not show the manual confirmation. Save failures show an error.
