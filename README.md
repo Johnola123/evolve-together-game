@@ -114,3 +114,7 @@ The shared survival phase is **30 seconds maximum** (server enforced even if `GA
 - When a match ends, **every player sees the same winner’s nickname** in the champion celebration. The winning player additionally sees “That’s you!”
 - All other v1.5 mechanics stay unchanged: ready-up lobby with repeating 3-minute timer, 30-point evolution budget, 30-second survival arena, voting for optional replay, and no accounts.
 - On Render, `GAME_BUILD` is intentionally ignored; setting it to 600 will not override the 240-second workshop. Remove any obsolete `GAME_BUILD` value from Render for clarity.
+
+## v1.7 Entry Screen Wording
+
+The home screen uses **Connect to Game** and **Connect with Room Code** instead of Find a Game / Play Now. No account or password is required. The lobby retains **Start Game** as its readiness action.
