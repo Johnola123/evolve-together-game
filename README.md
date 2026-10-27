@@ -126,3 +126,7 @@ During the 4-minute workshop, each within-budget edit is auto-saved to the serve
 
 ## Interface refinement (v1.9)
 The “Build · Adapt · Survive” tagline is now placed beneath the Evolve Together logo. Round information and the current stage appear in clean, separate labels above the stage title, without the distracting “optional replays” phrase or raw `finished` status. Gameplay and timers are unchanged.
+
+
+## Interface refinement (v1.10)
+The workshop no longer shows the large draft/unsaved-status heading. It displays only a more prominent notice: 'The digital host automatically releases all creatures when the timer reaches zero.' Automatic saving continues to run unchanged.

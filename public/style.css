@@ -28,3 +28,6 @@
 .stage-round,.stage-phase{display:inline-flex;align-items:center;min-height:26px;border:1px solid #426a70;background:#1b3e47;color:#d5f3ea;border-radius:9px;padding:4px 10px;font-size:11px;font-weight:800;letter-spacing:.35px}
 .stage-phase{border-color:#437d6d;background:#174337;color:#aef1cf}
 @media(max-width:540px){.brand-tagline{font-size:8px;letter-spacing:.65px}.hud{gap:10px}.stage-indicators{gap:5px}.stage-round,.stage-phase{font-size:10px;padding:3px 7px}}
+
+/* Keep the digital-host guidance prominent without a redundant draft status. */
+.workshop-release-note{margin:0;font-size:15px;font-weight:700;line-height:1.55;color:#e1fff1}
