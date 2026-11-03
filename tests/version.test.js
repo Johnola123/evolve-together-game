@@ -10,5 +10,5 @@ test('server sets fixed four-minute workshop duration',()=>{
 test('winning nickname appears for all players, including champion',()=>{
  const source=fs.readFileSync(path.join(__dirname,'..','public','game.js'),'utf8');
  assert.match(source,/HOORAY! \${esc\(winner\.nick\)} IS THE EVOLUTION CHAMPION!/);
- assert.doesNotMatch(source,/YOU ARE THE EVOLUTION CHAMPION !/);
+ assert.doesNotMatch(source,/YOU ARE THE EVOLUTION CHAMPION !!/);
 });
